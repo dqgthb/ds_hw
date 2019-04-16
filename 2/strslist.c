@@ -3,7 +3,7 @@
 #include <string.h> // strdup, strcmp
 
 // User structure type definition
-typedef struct 
+typedef struct
 {
 	char	*token;
 	int		freq;
@@ -28,10 +28,6 @@ typedef struct
 ////////////////////////////////////////////////////////////////////////////////
 // Prototype declarations
 
-/* Allocates dynamic memory for a list head node and returns its address to caller
-	return	head node pointer
-			NULL if overflow
-*/
 LIST *createList( void);
 
 /* Deletes all data in list and recycles memory
@@ -95,10 +91,6 @@ static void _delete( LIST *pList, NODE *pPre, NODE *pLoc, tTOKEN **dataOutPtr);
 */
 static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu);
 
-/* Allocates dynamic memory for a token structure, initialize fields(token, freq) and returns its address to caller
-	return	token structure pointer
-			NULL if overflow
-*/
 tTOKEN *createToken( char *str);
 
 /* Deletes all data in token structure and recycles memory
@@ -113,7 +105,7 @@ int main( void)
 	char str[1024];
 	tTOKEN *pToken;
 	int ret;
-	
+
 	// creates a null list
 	//list = createList();
 	if (!list)
@@ -121,21 +113,45 @@ int main( void)
 		printf( "Cannot create list\n");
 		return 100;
 	}
-	
+
 	while(scanf( "%s", str) == 1)
 	{
 		//pToken = createToken( str);
-		
+
 		// insert function call
 		//ret = addNode( list, pToken);
-		
-		//if (ret == 1) // duplicated 
+
+		//if (ret == 1) // duplicated
 			//destroyToken( pToken);
 	}
 	// print function call
 	//printList( list);
-	
+
 	//destroyList( list);
-	
+
 	return 0;
 }
+
+/* Allocates dynamic memory for a list head node and returns its address to caller
+	return	head node pointer
+			NULL if overflow
+*/
+LIST *createList( void){
+    LIST *ptr = malloc(sizeof *ptr);
+    if(!ptr) return NULL;
+    ptr->count = 0;
+    return ptr;
+}
+
+/* Allocates dynamic memory for a token structure, initialize fields(token, freq) and returns its address to caller
+	return	token structure pointer
+			NULL if overflow
+*/
+tTOKEN *createToken( char *str){
+    tTOKEN *ptr = malloc(sizeof *ptr);
+    if(!ptr) return NULL;
+    ptr->freq=0;
+    ptr->token=
+
+}
+
