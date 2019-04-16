@@ -35,11 +35,6 @@ LIST *createList( void);
 */
 LIST *destroyList( LIST *pList);
 
-/* Inserts data into list
-	return	-1 if overflow
-			0 if successful
-			1 if duplicated key
-*/
 int addNode( LIST *pList, tTOKEN *dataInPtr);
 
 /* Removes data from list
@@ -83,12 +78,6 @@ static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr);
 */
 static void _delete( LIST *pList, NODE *pPre, NODE *pLoc, tTOKEN **dataOutPtr);
 
-/* internal search function
-	searches list and passes back address of node
-	containing target and its logical predecessor
-	return	1 found
-			0 not found
-*/
 static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu);
 
 tTOKEN *createToken( char *str);
@@ -107,7 +96,7 @@ int main( void)
 	int ret;
 
 	// creates a null list
-	//list = createList();
+	list = createList();
 	if (!list)
 	{
 		printf( "Cannot create list\n");
@@ -116,7 +105,7 @@ int main( void)
 
 	while(scanf( "%s", str) == 1)
 	{
-		//pToken = createToken( str);
+		pToken = createToken(str);
 
 		// insert function call
 		//ret = addNode( list, pToken);
@@ -151,7 +140,31 @@ tTOKEN *createToken( char *str){
     tTOKEN *ptr = malloc(sizeof *ptr);
     if(!ptr) return NULL;
     ptr->freq=0;
-    ptr->token=
+    ptr->token=strdup(str); // must free after usage.
+    return ptr;
+}
 
+/* Inserts data into list
+	return	-1 if overflow
+			0 if successful
+			1 if duplicated key
+*/
+int addNode( LIST *pList, tTOKEN *dataInPtr){
+    // search through NODEs
+    NODE *curr = pList->head;
+    while(!curr){
+
+    }
+    NODE *ptr = malloc(sizeof *ptr);
+}
+
+/* internal search function
+	searches list and passes back address of node
+	containing target and its logical predecessor
+	return	1 found
+			0 not found
+*/
+static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu){
+    NODE *curr = pList->head;
 }
 
