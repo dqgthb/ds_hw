@@ -144,7 +144,7 @@ int main( int argc, char **argv)
                 break;
 
             case BACKWARD_PRINT:
-                //printListR( list);
+                printListR( list);
                 break;
 
             case DELETE:
@@ -383,14 +383,28 @@ static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr){
     if(pNew == NULL){
         return 0;
     }
-
     pNew->dataPtr = dataInPtr;
 
     if(pPre == NULL){ // pNew must be the new head
-        pNew->rlink = pList->head; // NULL
-        pList->head = pNew;
-    }else{
+        pNew->llink = NULL;
+        if(pList->head == NULL){ // pNew is the first node.
+            pList->head = pNew;
+            pList->rear = pNew;
+            pNew->rlink = NULL;
+        }else{ // there exists other nodes.
+            pNew->rlink = pList->head;
+            pList->head->llink = pNew;
+            pList->head = pNew;
+        }
+    }else if(pPre->rlink == NULL){ // pNew must be the new rear
+        pNew->rlink = NULL;
+        pNew->llink = pPre;
+        pPre->rlink = pNew;
+        pList->rear = pNew;
+    }else{ // pNew must be in the middle of two nodes.
         pNew->rlink = pPre->rlink;
+        pPre->rlink->llink = pNew;
+        pNew->llink = pPre;
         pPre->rlink = pNew;
     }
     pList->count++;
