@@ -79,13 +79,12 @@ int main( void)
 		// insert function call
 		ret = addNode( list, pToken);
 
-		//if (ret == 1) // duplicated
-			//destroyToken( pToken);
+		if (ret == 1) // duplicated
+			destroyToken( pToken);
 	}
 	// print function call
 	printList( list);
-
-	//destroyList( list);
+	destroyList( list);
 
 	return 0;
 }
