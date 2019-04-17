@@ -1,3 +1,6 @@
+#define DEBUG 1
+#define log(x) if(DEBUG) printf(x)
+#define dbg if(DEBUG)
 #include <stdlib.h> // malloc
 #include <stdio.h>
 #include <string.h> // strdup, strcmp
@@ -89,6 +92,8 @@ int main( void)
 
 	// creates a null list
 	list = createList();
+    log("list created!\n");
+
 	if (!list)
 	{
 		printf( "Cannot create list\n");
@@ -97,7 +102,10 @@ int main( void)
 
 	while(scanf( "%s", str) == 1)
 	{
+        printf("str is : %s\n", str);
+
 		pToken = createToken(str);
+        log("after create return main\n");
 
 		// insert function call
 		ret = addNode( list, pToken);
@@ -135,6 +143,7 @@ tTOKEN *createToken( char *str){
     if(!ptr){
         return NULL;
     }
+    dbg printf("token created with %s\n", str);
     ptr->freq=0;
     ptr->token=strdup(str); // must free after usage.
     return ptr;
@@ -146,8 +155,9 @@ tTOKEN *createToken( char *str){
 			1 if duplicated key
 */
 int addNode( LIST *pList, tTOKEN *dataInPtr){
-    NODE *pPre, *pLoc;
+    NODE *pPre=NULL, *pLoc=NULL;
     int found = _search(pList, &pPre, &pLoc, dataInPtr->token);
+    dbg printf("found: %d\n", found);
     if(found){ // dupe key
         return 1;
     }
@@ -221,7 +231,7 @@ static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr){
 void printList( LIST *pList){
     NODE* curr = pList->head;
     while(curr){
-        printf("%s\t%d\n",curr->dataPtr->);
+        printf("%s\t%d\n",curr->dataPtr->token, curr->dataPtr->freq);
         curr = curr->link;
     }
 }
