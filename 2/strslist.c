@@ -131,7 +131,6 @@ int addNode( LIST *pList, tTOKEN *dataInPtr){
     dbg printf("found: %d\n", found);
     if(found){ // dupe key
         pLoc->dataPtr->freq++;
-        destroyToken(dataInPtr);
         return 1;
     }
 
