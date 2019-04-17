@@ -1,5 +1,5 @@
 // my macros
-#define DEBUG 1
+#define DEBUG 0
 #define log(x) if(DEBUG) printf(x)
 #define dbg if(DEBUG)
 
@@ -267,7 +267,10 @@ tTOKEN *destroyToken( tTOKEN *pToken){
 }
 
 NODE *destroyNode(NODE * pNode){
-    destroyToken(pNode->dataPtr);
+    if(pNode->dataPtr != NULL){
+        destroyToken(pNode->dataPtr);
+    }
+    pNode->dataPtr = NULL;
     pNode->llink = NULL;
     pNode->rlink = NULL;
     free(pNode);
@@ -417,11 +420,24 @@ static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr){
 */
 static void _delete( LIST *pList, NODE *pPre, NODE *pLoc, tTOKEN **dataOutPtr){
     *dataOutPtr = pLoc->dataPtr;
-    if(pPre == NULL){
-        pList->head = pLoc->rlink;
-    }else{
+    if(pPre == NULL){ // The head node is to be deleted
+        if(pList->head == pList->rear){ // The head node is the only node.
+            pList->head = NULL;
+            pList->rear = NULL;
+        }else{ // There exists other nodes.
+            pList->head = pLoc->rlink;
+            pLoc->rlink->llink = NULL;
+        }
+    }else if(pList->rear == pLoc){ // The rear node is to be deleted
+        pList->rear = pLoc->llink;
+        pLoc->llink->rlink = NULL;
+    }else{ // A middle node is to be deleted.
         pPre->rlink = pLoc->rlink;
+        pLoc->rlink->llink = pPre;
     }
+    pLoc->llink = NULL;
+    pLoc->rlink = NULL;
+    pLoc->dataPtr = NULL;
     destroyNode(pLoc);
     pList->count--;
 }
