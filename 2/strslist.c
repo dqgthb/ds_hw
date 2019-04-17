@@ -45,11 +45,9 @@ static void _delete( LIST *pList, NODE *pPre, NODE *pLoc, tTOKEN **dataOutPtr);
 static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu);
 tTOKEN *createToken( char *str);
 tTOKEN *destroyToken( tTOKEN *pToken);
-// What I created in addition
+// My additional functions
 NODE *createNode(void);
 NODE *destroyNode(NODE * node);
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 int main( void)
@@ -84,6 +82,7 @@ int main( void)
 	}
 	// print function call
 	printList( list);
+
 	destroyList( list);
 
 	return 0;
@@ -99,7 +98,9 @@ LIST *createList( void){
         return NULL;
     }
     ptr->count = 0;
+    ptr->pos = NULL;
     ptr->head = NULL;
+    ptr->rear = NULL;
     return ptr;
 }
 
@@ -150,7 +151,6 @@ int addNode( LIST *pList, tTOKEN *dataInPtr){
 	return	1 found
 			0 not found
 */
-
 static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu){
     *pPre = NULL;
     *pLoc = pList->head;
@@ -181,7 +181,7 @@ static int _search( LIST *pList, NODE **pPre, NODE **pLoc, char *pArgu){
 			0 if memory overflow
 */
 static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr){
-    NODE *pNew = malloc(sizeof *pNew);
+    NODE *pNew = createNode();
     // check memory overflow
     if(pNew == NULL){
         return 0;
@@ -206,7 +206,7 @@ static int _insert( LIST *pList, NODE *pPre, tTOKEN *dataInPtr){
 void printList( LIST *pList){
     NODE* curr = pList->head;
     while(curr){
-        printf("%s %d\n",curr->dataPtr->token, curr->dataPtr->freq);
+        printf("%s\t%d\n",curr->dataPtr->token, curr->dataPtr->freq);
         printf("\n");
         curr = curr->link;
     }
@@ -298,6 +298,8 @@ LIST *destroyList( LIST *pList){
         destroyNode(delp);
     }
     pList->pos = NULL;
+    pList->head = NULL;
+    pList->rear = NULL;
     pList->count = 0;
     free(pList);
     return NULL;
@@ -309,14 +311,13 @@ NODE *destroyNode(NODE * node){
     free(node);
     return NULL;
 }
+
 NODE *createNode(void){
     NODE *ptr = malloc(sizeof *ptr);
     if(!ptr){
-        fprintf(stderr, "FATAL: malloc fail(createNode).");
-        abort();
+        return NULL;
     }
     ptr->dataPtr = NULL;
     ptr->link = NULL;
     return ptr;
 }
-
